@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+#header {
+	background-color: black;
+	color: white;
+	text-align: center;
+	}
+	
+#nav {
+	line-height:3px;
+    background-color:#EEEEEE;
+    width:100px;
+	height: 500px;
+	float: right;
+}
+aside {
+    width:350px;
+    float:left;
+    padding:10px;	 	 
+}
+
+#mycanvas {
+	Display: block;
+}
+
+</style>
+</head>
+
+<body onLoad ="initialize()">
+
+<div id="header">
+<h1>
+Program to Draw geometrical shapes and transform through 2d boundary
+</h1>
+</div>
+<div id="nav">
+<button type="Circle" id="cir" onclick = "selectC()" >Draw Circle</button>
+<br></br>
+<button type="Rectangle" id="rect" onclick = "selectR()">Draw Rectangle</button>
+<br></br>
+<button type="Clean" id="Clean" onclick = "Clean()">Clean</button>
+<br></br>
+<button type="Move" id="move" onclick = "move()">Move</button>
+<br></br>
+
+</div>
+<br></br>
+<p id="demo">hello </p>
+<p id="demo1">hi </p>
+<canvas  id="mycanvas" width = "500" height = "500" style="border:3px solid #0000EE;">
+	canvas tag not supported
+</canvas>
+
+	
+</body>
+
+
+<title> The canvas tag </title>
+<script>
+var canvas = document.getElementById('mycanvas');
+var ctx = canvas.getContext('2d');
+var rect = {};
+var drag = false;
+var case1 = 0;
+
+function move()
+{
+if(case1 == 1)
+	{
+    drawCircle();
+	}
+	else if(case1 == 2)
+	{
+	drawRectangle();
+	}
+	else if(case1 == 3)
+	{
+	drawLine();
+	}
+}
+function Clean()
+{
+ctx.clearRect(0,0, canvas.width, canvas.height);
+}
+
+function selectC()
+{
+case1 = 1;
+}
+
+function selectR()
+{
+case1 = 2;
+}
+
+function selectL()
+{
+case1 = 3;
+}
+function drawRectangle() {
+ctx.fillStyle = "#EFF000";
+ ctx.fillRect(rect.startX, rect.startY, rect.w, rect.h);
+}
+function drawCircle(){
+var a,b;
+a = rect.x - rect.startX;
+b = rect.y - rect.startY;
+var c,d;
+c = a*a;
+d = b*b;
+var radius = Math.sqrt(c+d);
+
+ctx.beginPath();
+ctx.arc(rect.startX,rect.startY, radius, 0, 2 * Math.PI, false);
+ctx.fillStyle = 'red';
+ctx.fill();
+ctx.lineWidth = 5;
+ctx.strokeStyle = '#003300';
+ctx.stroke();
+}
+
+function mouseDown(event) {
+  rect.startX = event.pageX - this.offsetLeft;
+  rect.startY = event.pageY - this.offsetTop;
+  drag = true;
+}
+
+function mouseUp() {
+  drag = false;
+}
+
+function mouseMove(event) {
+  if (drag) {
+    rect.w = (event.pageX - this.offsetLeft) - rect.startX;
+    rect.h = (event.pageY - this.offsetTop) - rect.startY;
+	rect.x = event.pageX - this.offsetLeft;
+	rect.y = event.pageY - this.offsetTop;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+	if(case1 == 1)
+	{
+    drawCircle();
+	}
+	else if(case1 == 2)
+	{
+	drawRectangle();
+	}
+	else if(case1 == 3)
+	{
+	drawLine();
+	}
+	
+  }
+}
+
+function initialize() {
+  canvas.addEventListener('mousedown', mouseDown, false);
+  canvas.addEventListener('mouseup', mouseUp, false);
+  canvas.addEventListener('mousemove', mouseMove, false);
+}
+
+
+
+
+
+</script>
+</head>
+</html>
